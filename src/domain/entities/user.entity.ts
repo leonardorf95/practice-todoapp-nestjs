@@ -1,38 +1,25 @@
 import { Exclude } from 'class-transformer';
 import {
   Column,
-  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Session } from './session.entity';
 import { Todos } from './todo.entity';
+import { BaseEntity } from '../common/BaseEntity';
 
 @Entity({ name: 'users' })
-export class User {
-  @Index()
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Index()
-  @Column({
-    type: 'varchar',
-    length: 255,
-  })
-  fullName: string;
-
+export class User extends BaseEntity {
   @Index()
   @Column({
     name: 'full_name',
     type: 'varchar',
     length: 255,
   })
-  firstName: string;
+  fullName: string;
 
   @Index()
   @Column({
@@ -53,20 +40,6 @@ export class User {
     length: 255,
   })
   role: string;
-
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'timetz',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'timetz',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
 
   @OneToOne(() => Session, (session) => session.user, {
     nullable: true,

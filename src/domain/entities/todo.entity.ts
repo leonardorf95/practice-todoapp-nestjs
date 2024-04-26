@@ -1,21 +1,16 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { BaseEntity } from '../common/BaseEntity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'todos' })
-export class Todos {
-  @Index()
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Todos extends BaseEntity {
   @Index()
   @Column({
     name: 'title',
@@ -40,20 +35,7 @@ export class Todos {
   })
   isCompleted: boolean;
 
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'timetz',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'timetz',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
-
+  @Exclude()
   @Index()
   @OneToOne(() => User, (user) => user.todo, {
     nullable: true,

@@ -1,42 +1,16 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, OneToOne } from 'typeorm';
 import { User } from './user.entity';
+import { BaseEntity } from '../common/BaseEntity';
 
 @Entity({ name: 'sessions' })
-export class Session {
-  @Index()
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Session extends BaseEntity {
   @Index()
   @Column({
     name: 'access_token',
     type: 'varchar',
-    length: 255,
+    length: 4000,
   })
   accessToken: string;
-
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'timetz',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'timetz',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
 
   @Index()
   @OneToOne(() => User, (user) => user.session, {
